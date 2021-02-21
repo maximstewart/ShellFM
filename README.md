@@ -1,3 +1,3 @@
 # ShellFM
 
-ShellFM is intended to be a generic python wrapper and structure for handling the filesystem by integrating it into other programs. It makes writing filesystem interactions simpler as exemplified in WebFM. Right now, it only really supports listing directories (with provided filters) and multiple "window" instances with sub "views" that list different paths. It can handle launching programs and locking directories too.
+ShellFM is intended to be a generic python wrapper and structure for handling the filesystem by integrating it into other programs. It makes writing filesystem interactions simpler as exemplified in WebFM. Right now, it only really supports listing directories (with provided filters) and multiple "window" instances with sub "views" that list different paths. It can handle launching programs and "locking" directories too.
