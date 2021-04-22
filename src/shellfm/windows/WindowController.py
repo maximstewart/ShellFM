@@ -4,7 +4,6 @@ from . import Window
 class WindowController:
     def __init__(self):
         self.windows = []
-        self.add_window()
 
     def get_window(self, win_id):
         for window in self.windows:
@@ -20,7 +19,6 @@ class WindowController:
         window      = Window()
         window.id   = len(self.windows) + 1
         window.name = "window_" + str(window.id)
-        window.create_view()
         self.windows.append(window)
 
     def add_view_for_window(self, win_id):
@@ -54,12 +52,17 @@ class WindowController:
             print("View Count: " + str( len(window.views) ))
 
 
-    def list_views_from_window(self, win_id):
+    def list_files_from_views_of_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
                 for view in window.views:
                     print(view.files)
                 break
+
+    def get_views_count(self, win_id):
+        for window in self.windows:
+            if window.id == win_id:
+                return len(window.views)
 
     def return_views_from_window(self, win_id):
         for window in self.windows:
