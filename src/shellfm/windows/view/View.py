@@ -9,8 +9,8 @@ from os.path import isdir, isfile, join
 
 
 # Application imports
-from . import Path, Settings, Launcher
-
+from .utils import Settings, Launcher
+from . import Path
 
 class View(Settings, Launcher, Path):
     def __init__(self):

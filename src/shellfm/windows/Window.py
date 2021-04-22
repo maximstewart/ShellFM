@@ -1,4 +1,4 @@
-from .import View
+from .view import View
 
 
 class Window:
