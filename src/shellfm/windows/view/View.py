@@ -135,6 +135,25 @@ class View(Settings, Launcher, Icon, Path):
             return False
 
 
+
+    def get_pixbuf_icon_str_combo(self):
+        data = []
+        dir  = self.get_current_directory()
+        for file in self.files:
+            icon = self.create_icon(dir, file).get_pixbuf()
+            data.append([icon, file[0]])
+
+        return data
+
+    def get_gtk_icon_str_combo(self):
+        data = []
+        dir  = self.get_current_directory()
+        for file in self.files:
+            icon = self.create_icon(dir, file)
+            data.append([icon, file[0]])
+
+        return data
+
     def get_current_directory(self):
         return self.get_path()
 
