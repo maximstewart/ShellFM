@@ -9,7 +9,7 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk
 from gi.repository import Gio
-from xdg.DesktopEntry import DesktopEntry
+from .utils.xdg.DesktopEntry import DesktopEntry
 
 
 # Application imports
