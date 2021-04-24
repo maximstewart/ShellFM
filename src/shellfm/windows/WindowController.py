@@ -24,8 +24,7 @@ class WindowController:
     def add_view_for_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
-                window.create_view()
-                break
+                return window.create_view()
 
     def pop_window(self):
         self.windows.pop()

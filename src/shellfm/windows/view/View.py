@@ -4,24 +4,38 @@ import os
 from os import listdir
 from os.path import isdir, isfile, join
 
+from random import randint
+
 
 # Lib imports
 
 
 # Application imports
 from .utils import Settings, Launcher
-from . import Path
+from . import Path, Icon
 
-class View(Settings, Launcher, Path):
+class View(Settings, Launcher, Icon, Path):
     def __init__(self):
+        self.id        = ""
         self.files     = []
         self.dirs      = []
         self.vids      = []
         self.images    = []
         self.desktop   = []
         self.ungrouped = []
+        self.id_length = 10
 
         self.set_to_home()
+        self.generate_id()
+
+
+    def random_with_N_digits(self, n):
+        range_start = 10**(n-1)
+        range_end = (10**n)-1
+        return randint(range_start, range_end)
+
+    def generate_id(self):
+        self.id = str(self.random_with_N_digits(self.id_length))
 
     def load_directory(self):
         path           = self.get_path()
@@ -128,6 +142,11 @@ class View(Settings, Launcher, Path):
         home = self.get_home() + "/"
         return path.replace(home, "")
 
+    def get_end_of_path(self):
+        parts = self.get_current_directory().split("/")
+        size  = len(parts)
+        return parts[size - 1]
+
     def get_dot_dots(self):
         return self.hashSet(['.', '..'])
 
@@ -145,7 +164,7 @@ class View(Settings, Launcher, Path):
             if not os.path.exists(hashImgPth) :
                 fullPath = join(current_directory, video[0])
                 self.logger.debug(f"Hash Path: {hashImgPth}\nFile Path: {fullPath}")
-                self.generateVideoThumbnail(fullPath, hashImgPth)
+                self.generate_video_thumbnail(fullPath, hashImgPth)
 
         return videos_set
 

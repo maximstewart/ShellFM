@@ -11,15 +11,20 @@ from os import path
 
 class Settings:
     logger            = None
+    GTK_ORIENTATION   = 1   # HORIZONTAL (0) VERTICAL (1)
     ABS_THUMBS_PTH    = None   # Used for thumbnail generation and is set by passing in
     REMUX_FOLDER      = None   # Used for Remuxed files and is set by passing in
     FFMPG_THUMBNLR    = None   # Used for thumbnail generator binary and is set by passing in
     HIDE_HIDDEN_FILES = True
-    lock_folder       = True
-    go_past_home      = False
+    lock_folder       = False
+    go_past_home      = True
 
-    subpath           = "/LazyShare"  # modify 'home' folder path
-    locked_folders    = "Synced Backup::::venv::::flasks".split("::::")
+    iconContainerWH   = [128, 128]
+    systemIconImageWH = [56, 56]
+    viIconWH          = [256, 128]
+
+    subpath           = ""  # modify 'home' folder path
+    locked_folders    = "venv::::flasks".split("::::")
     mplayer_options   = "-quiet -really-quiet -xy 1600 -geometry 50%:50%".split()
     music_app         = "/opt/deadbeef/bin/deadbeef"
     media_app         = "mpv"
