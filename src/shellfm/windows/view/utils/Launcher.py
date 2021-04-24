@@ -9,7 +9,7 @@ import os, subprocess, threading
 
 
 class Launcher:
-    def openFilelocally(self, file):
+    def open_file_locally(self, file):
         lowerName = file.lower()
         command   = []
 
@@ -38,7 +38,7 @@ class Launcher:
         subprocess.Popen(command, start_new_session=True, stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
 
 
-    def remuxVideo(self, hash, file):
+    def remux_video(self, hash, file):
         remux_vid_pth = self.REMUX_FOLDER + "/" + hash + ".mp4"
         self.logger.debug(remux_vid_pth)
 
@@ -66,53 +66,6 @@ class Launcher:
 
         return True
 
-
-    def generate_video_thumbnail(self, fullPath, hashImgPth):
-        try:
-            proc = subprocess.Popen([self.FFMPG_THUMBNLR, "-t", "65%", "-s", "300", "-c", "jpg", "-i", fullPath, "-o", hashImgPth])
-            proc.wait()
-        except Exception as e:
-            self.logger.debug(repr(e))
-            self.ffprobe_generate_video_thumbnail(fullPath, hashImgPth)
-
-
-    def generate_video_thumbnail(self, fullPath, hashImgPth):
-        proc = None
-        try:
-            # Stream duration
-            command  = ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=duration", "-of", "default=noprint_wrappers=1:nokey=1", fullPath]
-            data     = subprocess.run(command, stdout=subprocess.PIPE)
-            duration = data.stdout.decode('utf-8')
-
-            # Format (container) duration
-            if "N/A" in duration:
-                command  = ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", fullPath]
-                data     = subprocess.run(command , stdout=subprocess.PIPE)
-                duration = data.stdout.decode('utf-8')
-
-            # Stream duration type: image2
-            if "N/A" in duration:
-                command  = ["ffprobe", "-v", "error", "-select_streams", "v:0", "-f", "image2", "-show_entries", "stream=duration", "-of", "default=noprint_wrappers=1:nokey=1", fullPath]
-                data     = subprocess.run(command, stdout=subprocess.PIPE)
-                duration = data.stdout.decode('utf-8')
-
-            # Format (container) duration type: image2
-            if "N/A" in duration:
-                command  = ["ffprobe", "-v", "error", "-f", "image2", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", fullPath]
-                data     = subprocess.run(command , stdout=subprocess.PIPE)
-                duration = data.stdout.decode('utf-8')
-
-            # Get frame roughly 35% through video
-            grabTime = str( int( float( duration.split(".")[0] ) * 0.35) )
-            command  = ["ffmpeg", "-ss", grabTime, "-an", "-i", fullPath, "-s", "320x180", "-vframes", "1", hashImgPth]
-            proc     = subprocess.Popen(command, stdout=subprocess.PIPE)
-            proc.wait()
-        except Exception as e:
-            print("Video thumbnail generation issue in thread:")
-            print( repr(e) )
-            self.logger.debug(repr(e))
-
-
     def check_remux_space(self):
         limit = self.remux_folder_max_disk_usage
         try:
@@ -121,7 +74,7 @@ class Launcher:
             self.logger.debug(e)
             return
 
-        usage = self.getRemuxFolderUsage(self.REMUX_FOLDER)
+        usage = self.get_remux_folder_usage(self.REMUX_FOLDER)
         if usage > limit:
             files = os.listdir(self.REMUX_FOLDER)
             for file in files:
@@ -129,7 +82,7 @@ class Launcher:
                 os.unlink(fp)
 
 
-    def getRemuxFolderUsage(self, start_path = "."):
+    def get_remux_folder_usage(self, start_path = "."):
         total_size = 0
         for dirpath, dirnames, filenames in os.walk(start_path):
             for f in filenames:

@@ -17,6 +17,7 @@ from . import Path, Icon
 class View(Settings, Launcher, Icon, Path):
     def __init__(self):
         self.id        = ""
+        self. logger   = None
         self.files     = []
         self.dirs      = []
         self.vids      = []
@@ -157,16 +158,7 @@ class View(Settings, Launcher, Icon, Path):
         return self.hashSet(self.dirs)
 
     def get_videos(self):
-        videos_set        = self.hashSet(self.vids)
-        current_directory = self.get_current_directory()
-        for video in videos_set:
-            hashImgPth = join(self.ABS_THUMBS_PTH, video[1]) + ".jpg"
-            if not os.path.exists(hashImgPth) :
-                fullPath = join(current_directory, video[0])
-                self.logger.debug(f"Hash Path: {hashImgPth}\nFile Path: {fullPath}")
-                self.generate_video_thumbnail(fullPath, hashImgPth)
-
-        return videos_set
+        return self.hashSet(self.vids)
 
     def get_images(self):
         return self.hashSet(self.images)
