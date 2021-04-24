@@ -9,7 +9,7 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk
 from gi.repository import Gio
-from .utils.xdg.DesktopEntry import DesktopEntry
+from .utils import xdg
 
 
 # Application imports
@@ -74,7 +74,7 @@ class Icon:
 
     def parse_desktop_files(self, full_path):
         try:
-            xdgObj      = DesktopEntry(full_path)
+            xdgObj      = xdg.DesktopEntry(full_path)
             icon        = xdgObj.getIcon()
             alt_icon_path = ""
 
