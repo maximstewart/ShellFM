@@ -13,7 +13,7 @@ from random import randint
 # Application imports
 from .utils import Settings, Launcher
 from .icons import Icon
-from . import Path 
+from . import Path
 
 class View(Settings, Launcher, Icon, Path):
     def __init__(self):
@@ -79,13 +79,13 @@ class View(Settings, Launcher, Icon, Path):
 
         self.files = self.dirs + self.vids + self.images + self.desktop + self.ungrouped
 
-    def hashText(self, text):
+    def hash_text(self, text):
         return hashlib.sha256(str.encode(text)).hexdigest()[:18]
 
-    def hashSet(self, arry):
+    def hash_set(self, arry):
         data = []
         for arr in arry:
-            data.append([arr, self.hashText(arr)])
+            data.append([arr, self.hash_text(arr)])
         return data
 
     def get_path_part_from_hash(self, hash):
@@ -100,12 +100,12 @@ class View(Settings, Launcher, Icon, Path):
         return file
 
     def get_files_formatted(self):
-        files     = self.hashSet(self.files),
-        dirs      = self.hashSet(self.dirs),
+        files     = self.hash_set(self.files),
+        dirs      = self.hash_set(self.dirs),
         videos    = self.get_videos(),
-        images    = self.hashSet(self.images),
-        desktops  = self.hashSet(self.desktop),
-        ungrouped = self.hashSet(self.ungrouped)
+        images    = self.hash_set(self.images),
+        desktops  = self.hash_set(self.desktop),
+        ungrouped = self.hash_set(self.ungrouped)
 
         return {
             'path_head': self.get_path(),
@@ -142,7 +142,7 @@ class View(Settings, Launcher, Icon, Path):
         dir  = self.get_current_directory()
         for file in self.files:
             icon = self.create_icon(dir, file).get_pixbuf()
-            data.append([icon, file[0]])
+            data.append([icon, file])
 
         return data
 
@@ -169,22 +169,22 @@ class View(Settings, Launcher, Icon, Path):
         return parts[size - 1]
 
     def get_dot_dots(self):
-        return self.hashSet(['.', '..'])
+        return self.hash_set(['.', '..'])
 
     def get_files(self):
-        return self.hashSet(self.files)
+        return self.hash_set(self.files)
 
     def get_dirs(self):
-        return self.hashSet(self.dirs)
+        return self.hash_set(self.dirs)
 
     def get_videos(self):
-        return self.hashSet(self.vids)
+        return self.hash_set(self.vids)
 
     def get_images(self):
-        return self.hashSet(self.images)
+        return self.hash_set(self.images)
 
     def get_desktops(self):
-        return self.hashSet(self.desktop)
+        return self.hash_set(self.desktop)
 
     def get_ungrouped(self):
-        return self.hashSet(self.ungrouped)
+        return self.hash_set(self.ungrouped)
