@@ -1,5 +1,5 @@
 from .utils import *
+from .icons import *
 
-from .Icon import Icon
-from .Path import Path
-from .View import View
+from .Path  import Path
+from .View  import View

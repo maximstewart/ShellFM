@@ -36,7 +36,7 @@ class Settings:
     VIDEO_ICON_WH     = [256, 128]
     SYS_ICON_WH       = [56, 56]
 
-    subpath           = "/LazyShare/Movies-TV-Music/TV/Anime/Barakamon"  # modify 'home' folder path
+    subpath           = "/Desktop"  # modify 'home' folder path
     # subpath           = "/Desktop"  # modify 'home' folder path
     locked_folders    = "venv::::flasks".split("::::")
     mplayer_options   = "-quiet -really-quiet -xy 1600 -geometry 50%:50%".split()

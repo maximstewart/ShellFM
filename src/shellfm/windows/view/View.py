@@ -12,7 +12,8 @@ from random import randint
 
 # Application imports
 from .utils import Settings, Launcher
-from . import Path, Icon
+from .icons import Icon
+from . import Path 
 
 class View(Settings, Launcher, Icon, Path):
     def __init__(self):
