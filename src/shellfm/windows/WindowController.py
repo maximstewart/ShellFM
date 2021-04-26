@@ -1,9 +1,22 @@
+# Python imports
+import json
+from os import path
+
+# Lib imports
+
+
+# Application imports
 from . import Window
 
 
 class WindowController:
     def __init__(self):
-        self.windows = []
+        self.windows     = []
+
+        USER_HOME        = path.expanduser('~')
+        CONFIG_PATH      = USER_HOME + "/.config/pyfm"
+        self.config_file = CONFIG_PATH + "/session.json"
+
 
     def get_window(self, win_id):
         for window in self.windows:
@@ -67,3 +80,31 @@ class WindowController:
         for window in self.windows:
             if window.id == win_id:
                 return window.views
+
+    def save_state(self):
+        windows = []
+        for window in self.windows:
+            views = []
+            for view in window.views:
+                views.append(view.get_current_directory())
+
+            windows.append(
+                [
+                    {
+                        'window':{
+                            "ID": str(window.id),
+                            "Name": window.name,
+                            "Nickname": window.nickname,
+                            'views': views
+                        }
+                    }
+                ]
+            )
+
+        with open(self.config_file, 'w') as outfile:
+            json.dump(windows, outfile, separators=(',', ':'), indent=4)
+
+    def load_state(self):
+        if path.isfile(self.config_file):
+            with open(self.config_file) as infile:
+                return json.load(infile)

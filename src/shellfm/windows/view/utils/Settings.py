@@ -33,7 +33,7 @@ class Settings:
     ABS_THUMBS_PTH    = BASE_THUMBS_PTH + "/normal"            # Used for thumbnail generation
     STEAM_ICONS_PTH   = BASE_THUMBS_PTH + "/steam_icons"
     CONTAINER_ICON_WH = [128, 128]
-    VIDEO_ICON_WH     = [256, 128]
+    VIDEO_ICON_WH     = [128, 64]
     SYS_ICON_WH       = [56, 56]
 
     subpath           = ""  # modify 'home' folder path
