@@ -119,7 +119,7 @@ class WindowController:
             if window.id == win_id:
                 return window.get_views_count()
 
-    def return_views_from_window(self, win_id):
+    def get_views_from_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
                 return window.get_all_views()

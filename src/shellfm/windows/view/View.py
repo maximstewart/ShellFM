@@ -91,6 +91,25 @@ class View(Settings, Launcher, Icon, Path):
             data.append([arr, self.hash_text(arr)])
         return data
 
+    def is_folder_locked(self, hash):
+        if self.lock_folder:
+            path_parts = self.get_path().split('/')
+            file       = self.get_path_part_from_hash(hash)
+
+            # Insure chilren folders are locked too.
+            lockedFolderInPath = False
+            for folder in self.locked_folders:
+                if folder in path_parts:
+                    lockedFolderInPath = True
+                    break
+
+            return (file in self.locked_folders or lockedFolderInPath)
+        else:
+            return False
+
+
+
+
     def get_path_part_from_hash(self, hash):
         files = self.get_files()
         file  = None
@@ -121,24 +140,6 @@ class View(Settings, Launcher, Icon, Path):
                 'ungrouped': ungrouped
             }
         }
-
-    def is_folder_locked(self, hash):
-        if self.lock_folder:
-            path_parts = self.get_path().split('/')
-            file       = self.get_path_part_from_hash(hash)
-
-            # Insure chilren folders are locked too.
-            lockedFolderInPath = False
-            for folder in self.locked_folders:
-                if folder in path_parts:
-                    lockedFolderInPath = True
-                    break
-
-            return (file in self.locked_folders or lockedFolderInPath)
-        else:
-            return False
-
-
 
     def get_pixbuf_icon_str_combo(self):
         data = []

@@ -7,6 +7,9 @@ import os
 
 
 class Path:
+    def get_home(self):
+        return os.path.expanduser("~") + self.subpath
+
     def get_path(self):
         return "/" + "/".join(self.path)
 
@@ -41,6 +44,3 @@ class Path:
         path = list( filter(None, home.replace("\\", "/").split('/')) )
         self.path = path
         self.load_directory()
-
-    def get_home(self):
-        return os.path.expanduser("~") + self.subpath
