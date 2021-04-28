@@ -1,12 +1,34 @@
+# Python imports
+from random import randint
+
+
+# Lib imports
+
+
+# Application imports
 from .view import View
 
 
 class Window:
     def __init__(self):
-        self.name     = ""
-        self.nickname = ""
-        self.id       = 0
-        self.views    = []
+        self.id_length = 10
+        self.id        = ""
+        self.name      = ""
+        self.nickname  = ""
+        self.views     = []
+
+        self.generate_id()
+
+
+    def random_with_N_digits(self, n):
+        range_start = 10**(n-1)
+        range_end = (10**n)-1
+        return randint(range_start, range_end)
+
+    def generate_id(self):
+        self.id = str(self.random_with_N_digits(self.id_length))
+
+
 
     def create_view(self):
         view = View()
@@ -16,12 +38,10 @@ class Window:
     def pop_view(self):
         self.views.pop()
 
-    def delete_view(self, vid):
-        i = -1
+    def delete_view_by_id(self, vid):
         for view in self.views:
-            i += 1
             if view.id == vid:
-                del self.views[i]
+                self.views.remove(view)
                 break
 
 
@@ -32,3 +52,13 @@ class Window:
 
     def get_view_by_index(self, index):
         return self.views[index]
+
+    def get_views_count(self):
+        return len(self.views)
+
+    def get_all_views(self):
+        return self.views
+
+    def list_files_from_views(self):
+        for view in self.views:
+            print(view.files)

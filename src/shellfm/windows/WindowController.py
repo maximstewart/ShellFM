@@ -11,44 +11,87 @@ from . import Window
 
 class WindowController:
     def __init__(self):
-        self.windows     = []
+        USER_HOME             = path.expanduser('~')
+        CONFIG_PATH           = USER_HOME + "/.config/pyfm"
+        self.config_file      = CONFIG_PATH + "/session.json"
 
-        USER_HOME        = path.expanduser('~')
-        CONFIG_PATH      = USER_HOME + "/.config/pyfm"
-        self.config_file = CONFIG_PATH + "/session.json"
+        self.active_window_id = ""
+        self.windows          = []
 
 
-    def get_window(self, win_id):
-        for window in self.windows:
-            if window.id == win_id:
-                return window
 
-        raise("No Window by ID {} found!".format(win_id))
 
-    def get_windows(self):
-        return self.windows
+    def create_window(self):
+        window          = Window()
+        window.name     = "window_" + window.id
+        window.nickname = "window_" + str(len(self.windows) + 1)
 
-    def add_window(self):
-        window      = Window()
-        window.id   = len(self.windows) + 1
-        window.name = "window_" + str(window.id)
         self.windows.append(window)
+        return window
+
 
     def add_view_for_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
                 return window.create_view()
 
+    def add_view_for_window_by_name(self, name):
+        for window in self.windows:
+            if window.name == name:
+                return window.create_view()
+
+    def add_view_for_window_by_nickname(self, nickname):
+        for window in self.windows:
+            if window.nickname == nickname:
+                return window.create_view()
+
     def pop_window(self):
         self.windows.pop()
 
     def delete_window_by_id(self, win_id):
-        i = 0
         for window in self.windows:
             if window.id == win_id:
-                self.window.remove(win_id)
+                self.windows.remove(window)
                 break
-            i += 1
+
+    def delete_window_by_name(self, name):
+        for window in self.windows:
+            if window.name == name:
+                self.windows.remove(window)
+                break
+
+    def delete_window_by_nickname(self, nickname):
+        for window in self.windows:
+            if window.nickname == nickname:
+                self.windows.remove(window)
+                break
+
+    def get_window_by_id(self, win_id):
+        for window in self.windows:
+            if window.id == win_id:
+                return window
+
+        raise(f"No Window by ID {win_id} found!")
+
+    def get_window_by_name(self, name):
+        for window in self.windows:
+            if window.name == name:
+                return window
+
+        raise(f"No Window by Name {name} found!")
+
+    def get_window_by_nickname(self, nickname):
+        for window in self.windows:
+            if window.nickname == nickname:
+                return window
+
+        raise(f"No Window by Nickname {nickname} found!")
+
+    def get_window_by_index(self, index):
+        return self.windows[index]
+
+    def get_all_windows(self):
+        return self.windows
 
     def set_window_nickname(self, win_id = None, nickname = ""):
         for window in self.windows:
@@ -57,29 +100,32 @@ class WindowController:
 
     def list_windows(self):
         for window in self.windows:
-            print("\n[  Window  ]")
-            print("ID: " + str(window.id))
-            print("Name: " + window.name)
-            print("Nickname: " + window.nickname)
-            print("View Count: " + str( len(window.views) ))
+            print("\n\n[  Window  ]")
+            print(f"ID: {window.id}")
+            print(f"Name: {window.name}")
+            print(f"Nickname: {window.nickname}")
+            print(f"View Count: {window.get_views_count()}")
+
 
 
     def list_files_from_views_of_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
-                for view in window.views:
-                    print(view.files)
+                window.list_files_from_views()
                 break
 
     def get_views_count(self, win_id):
         for window in self.windows:
             if window.id == win_id:
-                return len(window.views)
+                return window.get_views_count()
 
     def return_views_from_window(self, win_id):
         for window in self.windows:
             if window.id == win_id:
-                return window.views
+                return window.get_all_views()
+
+
+
 
     def save_state(self):
         windows = []
@@ -92,7 +138,7 @@ class WindowController:
                 [
                     {
                         'window':{
-                            "ID": str(window.id),
+                            "ID": window.id,
                             "Name": window.name,
                             "Nickname": window.nickname,
                             'views': views

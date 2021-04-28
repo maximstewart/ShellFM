@@ -15,20 +15,22 @@ from .utils import Settings, Launcher
 from .icons import Icon
 from . import Path
 
+
 class View(Settings, Launcher, Icon, Path):
     def __init__(self):
-        self.id        = ""
         self. logger   = None
+        self.id_length = 10
+
+        self.id        = ""
         self.files     = []
         self.dirs      = []
         self.vids      = []
         self.images    = []
         self.desktop   = []
         self.ungrouped = []
-        self.id_length = 10
 
-        self.set_to_home()
         self.generate_id()
+        self.set_to_home()
 
 
     def random_with_N_digits(self, n):
@@ -38,6 +40,7 @@ class View(Settings, Launcher, Icon, Path):
 
     def generate_id(self):
         self.id = str(self.random_with_N_digits(self.id_length))
+
 
     def load_directory(self):
         path           = self.get_path()
