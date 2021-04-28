@@ -28,7 +28,8 @@ class Window:
     def generate_id(self):
         self.id = str(self.random_with_N_digits(self.id_length))
 
-
+    def get_window_id(self):
+        return self.id
 
     def create_view(self):
         view = View()

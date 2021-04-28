@@ -106,12 +106,14 @@ class WindowController:
                 window.nickname = nickname
 
     def list_windows(self):
+        print("\n[  ----  Windows  ----  ]\n")
         for window in self.windows:
-            print("\n\n[  Window  ]")
-            print(f"ID: {window.id}")
+            print(f"\nID: {window.id}")
             print(f"Name: {window.name}")
             print(f"Nickname: {window.nickname}")
             print(f"View Count: {window.get_views_count()}")
+
+        print("\n-------------------------\n")
 
 
 

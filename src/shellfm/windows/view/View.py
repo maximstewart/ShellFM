@@ -41,6 +41,8 @@ class View(Settings, Launcher, Icon, Path):
     def generate_id(self):
         self.id = str(self.random_with_N_digits(self.id_length))
 
+    def get_tab_id(self):
+        return self.id
 
     def load_directory(self):
         path           = self.get_path()
