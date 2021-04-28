@@ -16,10 +16,17 @@ class WindowController:
         self.config_file      = CONFIG_PATH + "/session.json"
 
         self.active_window_id = ""
+        self.active_tab_id    = ""
         self.windows          = []
 
 
 
+    def set_active_data(self, wid, tid):
+        self.active_window_id = str(wid)
+        self.active_tab_id    = str(tid)
+
+    def get_active_data(self):
+        return self.active_window_id, self.active_tab_id
 
     def create_window(self):
         window          = Window()
