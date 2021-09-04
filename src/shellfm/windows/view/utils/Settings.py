@@ -16,6 +16,7 @@ class Settings:
     USER_HOME         = path.expanduser('~')
     CONFIG_PATH       = USER_HOME   + "/.config/shellfm"
     CONFIG_FILE       = CONFIG_PATH + "/settings.json"
+    HIDE_HIDDEN_FILES = True
 
     GTK_ORIENTATION   = 1      # HORIZONTAL (0) VERTICAL (1)
     DEFAULT_ICONS     = CONFIG_PATH   + "/icons"
