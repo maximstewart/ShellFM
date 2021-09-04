@@ -15,6 +15,7 @@ class Window:
         self.id        = ""
         self.name      = ""
         self.nickname  = ""
+        self.isHidden  = False
         self.views     = []
 
         self.generate_id()

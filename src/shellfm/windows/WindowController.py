@@ -13,12 +13,11 @@ class WindowController:
     def __init__(self):
         USER_HOME             = path.expanduser('~')
         CONFIG_PATH           = USER_HOME + "/.config/pyfm"
-        self.config_file      = CONFIG_PATH + "/session.json"
+        self.session_file     = CONFIG_PATH + "/session.json"
 
         self.active_window_id = ""
         self.active_tab_id    = ""
         self.windows          = []
-
 
 
     def set_active_data(self, wid, tid):
@@ -111,8 +110,8 @@ class WindowController:
             print(f"\nID: {window.id}")
             print(f"Name: {window.name}")
             print(f"Nickname: {window.nickname}")
+            print(f"Is Hidden: {window.isHidden}")
             print(f"View Count: {window.get_views_count()}")
-
         print("\n-------------------------\n")
 
 
@@ -150,16 +149,17 @@ class WindowController:
                             "ID": window.id,
                             "Name": window.name,
                             "Nickname": window.nickname,
+                            "isHidden": window.isHidden,
                             'views': views
                         }
                     }
                 ]
             )
 
-        with open(self.config_file, 'w') as outfile:
+        with open(self.session_file, 'w') as outfile:
             json.dump(windows, outfile, separators=(',', ':'), indent=4)
 
     def load_state(self):
-        if path.isfile(self.config_file):
-            with open(self.config_file) as infile:
+        if path.isfile(self.session_file):
+            with open(self.session_file) as infile:
                 return json.load(infile)
