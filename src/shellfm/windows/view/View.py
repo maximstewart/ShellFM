@@ -11,23 +11,26 @@ from random import randint
 
 
 # Application imports
-from .utils import Settings, Launcher
+from .utils import Settings, Launcher, FileHandler
 from .icons import Icon
 from . import Path
 
 
-class View(Settings, Launcher, Icon, Path):
+class View(Settings, FileHandler, Launcher, Icon, Path):
     def __init__(self):
-        self. logger   = None
-        self.id_length = 10
+        self. logger     = None
+        self.id_length   = 10
 
-        self.id        = ""
-        self.files     = []
-        self.dirs      = []
-        self.vids      = []
-        self.images    = []
-        self.desktop   = []
-        self.ungrouped = []
+        self.id          = ""
+        self.wid         = None
+        self.dir_watcher = None
+        self.hide_hidden = self.HIDE_HIDDEN_FILES
+        self.files       = []
+        self.dirs        = []
+        self.vids        = []
+        self.images      = []
+        self.desktop     = []
+        self.ungrouped   = []
 
         self.generate_id()
         self.set_to_home()
@@ -44,6 +47,18 @@ class View(Settings, Launcher, Icon, Path):
     def get_tab_id(self):
         return self.id
 
+    def set_wid(self, _wid):
+        self.wid = _wid
+
+    def get_wid(self):
+        return self.wid
+
+    def set_dir_watcher(self, watcher):
+        self.dir_watcher = watcher
+
+    def get_dir_watcher(self):
+        return self.dir_watcher
+
     def load_directory(self):
         path           = self.get_path()
         self.dirs      = [".", ".."]
@@ -59,7 +74,7 @@ class View(Settings, Launcher, Icon, Path):
 
         for f in listdir(path):
             file = join(path, f)
-            if self.HIDE_HIDDEN_FILES:
+            if self.hide_hidden:
                 if f.startswith('.'):
                     continue
 

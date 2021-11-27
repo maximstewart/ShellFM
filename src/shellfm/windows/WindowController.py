@@ -1,9 +1,8 @@
 # Python imports
-import json
+import threading, subprocess, time, json
 from os import path
 
 # Lib imports
-
 
 # Application imports
 from . import Window
@@ -11,13 +10,13 @@ from . import Window
 
 class WindowController:
     def __init__(self):
-        USER_HOME             = path.expanduser('~')
-        CONFIG_PATH           = USER_HOME + "/.config/pyfm"
-        self.session_file     = CONFIG_PATH + "/session.json"
+        USER_HOME              = path.expanduser('~')
+        CONFIG_PATH            = USER_HOME   + "/.config/pyfm"
+        self.session_file      = CONFIG_PATH + "/session.json"
 
-        self.active_window_id = ""
-        self.active_tab_id    = ""
-        self.windows          = []
+        self.active_window_id  = ""
+        self.active_tab_id     = ""
+        self.windows           = []
 
 
     def set_active_data(self, wid, tid):

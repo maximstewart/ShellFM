@@ -14,6 +14,9 @@ from .xdg.DesktopEntry import DesktopEntry
 
 
 class DesktopIconMixin:
+    # NOTE: !!!IMPORTANT!!! This method is NOT thread safe and causes seg faults
+    # when ran from  another thread! It took me a while to hunt this info down.
+    # Gio is the culprit. Pull this into a main Gtk thread if actually needed. 
     def get_system_thumbnail(self, filename, size):
         try:
             if os.path.exists(filename):
