@@ -2,6 +2,7 @@
     "settings": {
         "base_of_home": "",
         "hide_hidden_files": "true",
+        "thumbnailer_path": "ffmpegthumbnailer",
         "go_past_home": "true",
         "lock_folder": "false",
         "locked_folders": "venv::::flasks",
