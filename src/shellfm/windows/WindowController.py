@@ -11,7 +11,7 @@ from . import Window
 class WindowController:
     def __init__(self):
         USER_HOME              = path.expanduser('~')
-        CONFIG_PATH            = USER_HOME   + "/.config/pyfm"
+        CONFIG_PATH            = USER_HOME   + "/.config/shellfm"
         self.session_file      = CONFIG_PATH + "/session.json"
 
         self.active_window_id  = ""
@@ -134,7 +134,7 @@ class WindowController:
 
 
 
-    def save_state(self):
+    def save_state(self, session_file = self.session_file):
         windows = []
         for window in self.windows:
             views = []
@@ -155,10 +155,10 @@ class WindowController:
                 ]
             )
 
-        with open(self.session_file, 'w') as outfile:
+        with open(session_file, 'w') as outfile:
             json.dump(windows, outfile, separators=(',', ':'), indent=4)
 
-    def load_state(self):
-        if path.isfile(self.session_file):
-            with open(self.session_file) as infile:
+    def load_state(self, session_file = self.session_file):
+        if path.isfile(session_file):
+            with open(session_file) as infile:
                 return json.load(infile)
