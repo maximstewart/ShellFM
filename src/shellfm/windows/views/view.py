@@ -176,11 +176,12 @@ class View(Settings, FileHandler, Launcher, Icon, Path):
         size  = len(parts)
         return parts[size - 1]
 
-    def is_hidden(self):
-        return self._dir_watcher
 
-    def set_is_hidden(self, state):
+    def set_hiding_hidden(self, state):
         self._hide_hidden = state
+
+    def is_hiding_hidden(self):
+        return self._hide_hidden
 
     def get_dot_dots(self):
         return self._hash_set(['.', '..'])
@@ -202,6 +203,9 @@ class View(Settings, FileHandler, Launcher, Icon, Path):
 
     def get_ungrouped(self):
         return self._hash_set(self._ungrouped)
+
+    def get_hidden(self):
+        return self._hash_set(self._hidden)
 
     def get_id(self):
         return self._id

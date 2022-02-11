@@ -53,7 +53,7 @@ class Window:
 
     def list_files_from_views(self):
         for view in self._views:
-            print(view.files)
+            print(view.get_files())
 
 
     def get_id(self):

@@ -26,7 +26,7 @@ class WindowController:
         self._windows           = []
 
 
-    def set_active_data(self, wid, tid):
+    def set__wid_and_tid(self, wid, tid):
         self._active_window_id = str(wid)
         self._active_tab_id    = str(tid)
 
@@ -174,7 +174,7 @@ class WindowController:
             with open(session_file, 'w') as outfile:
                 json.dump(windows, outfile, separators=(',', ':'), indent=4)
         else:
-            raise Exception("Window dara corrupted! Can not save session!")
+            raise Exception("Window data corrupted! Can not save session!")
 
     def load_state(self, session_file = None):
         if not session_file:
