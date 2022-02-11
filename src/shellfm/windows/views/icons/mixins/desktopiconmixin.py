@@ -5,8 +5,6 @@ from os.path import isfile
 # Gtk imports
 import gi
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gio
 from gi.repository import Gtk
 
 # Application imports
@@ -14,29 +12,6 @@ from .xdg.DesktopEntry import DesktopEntry
 
 
 class DesktopIconMixin:
-    # NOTE: !!!IMPORTANT!!! This method is NOT thread safe and causes seg faults
-    # when ran from  another thread! It took me a while to hunt this info down.
-    # Gio is the culprit. Pull this into a main Gtk thread if actually needed. 
-    def get_system_thumbnail(self, filename, size):
-        try:
-            if os.path.exists(filename):
-                gioFile   = Gio.File.new_for_path(filename)
-                info      = gioFile.query_info('standard::icon' , 0, Gio.Cancellable())
-                icon      = info.get_icon().get_names()[0]
-                iconTheme = Gtk.IconTheme.get_default()
-                iconData  = iconTheme.lookup_icon(icon , size , 0)
-                if iconData:
-                    iconPath  = iconData.get_filename()
-                    return Gtk.Image.new_from_file(iconPath)
-                else:
-                    return None
-            else:
-                return None
-        except Exception as e:
-            print("system icon generation issue:")
-            print( repr(e) )
-            return None
-
     def parse_desktop_files(self, full_path):
         try:
             xdgObj        = DesktopEntry(full_path)

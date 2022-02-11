@@ -1,11 +1,17 @@
 # System import
-import os, subprocess, threading
+import os, threading, subprocess
 
 
 # Lib imports
 
 
 # Apoplication imports
+
+
+def threaded(fn):
+    def wrapper(*args, **kwargs):
+        threading.Thread(target=fn, args=args, kwargs=kwargs).start()
+    return wrapper
 
 
 class Launcher:
@@ -30,13 +36,28 @@ class Launcher:
             command = [self.text_app, file]
         elif lowerName.endswith(self.fpdf):
             command = [self.pdf_app, file]
-        else:
+        elif lowerName.endswith("placeholder-until-i-can-get-a-use-pref-fm-flag"):
             command = [self.file_manager_app, file]
+        else:
+            command = ["xdg-open", file]
 
-            self.logger.debug(command)
+        self.execute(command, use_shell=False)
+
+
+    def execute(self, command, start_dir=os.getenv("HOME"), use_os_system=None, use_shell=True):
+        self.logger.debug(command)
+        if use_os_system:
+            os.system(command)
+        else:
+            subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=True, stdout=None, stderr=None, close_fds=True)
+
+    def execute_and_return_thread_handler(self, command, start_dir=os.getenv("HOME"), use_shell=True):
         DEVNULL = open(os.devnull, 'w')
-        subprocess.Popen(command, start_new_session=True, stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
+        return subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=True, stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
 
+    @threaded
+    def app_chooser_exec(self, app_info, uris):
+        app_info.launch_uris_async(uris)
 
     def remux_video(self, hash, file):
         remux_vid_pth = self.REMUX_FOLDER + "/" + hash + ".mp4"
