@@ -176,7 +176,7 @@ class WindowController:
         else:
             raise Exception("Window data corrupted! Can not save session!")
 
-    def load_state(self, session_file = None):
+    def get_state_from_file(self, session_file = None):
         if not session_file:
             session_file = self._session_file
 
