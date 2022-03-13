@@ -26,7 +26,7 @@ class WindowController:
         self._windows           = []
 
 
-    def set__wid_and_tid(self, wid, tid):
+    def set_wid_and_tid(self, wid, tid):
         self._active_window_id = str(wid)
         self._active_tab_id    = str(tid)
 
