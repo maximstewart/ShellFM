@@ -17,8 +17,8 @@ def threaded(fn):
 class WindowController:
     def __init__(self):
         USER_HOME               = path.expanduser('~')
-        CONFIG_PATH             = USER_HOME   + "/.config/solarfm"
-        self._session_file      = CONFIG_PATH + "/session.json"
+        CONFIG_PATH             = f"{USER_HOME}/.config/solarfm"
+        self._session_file      = f"{CONFIG_PATH}/session.json"
 
         self._event_sleep_time  = 1
         self._active_window_id  = ""
@@ -35,7 +35,7 @@ class WindowController:
 
     def create_window(self):
         window = Window()
-        window.set_nickname(f"window_{str(len(self._windows) + 1)}")
+        window.set_nickname(f"window_{len(self._windows) + 1}")
         self._windows.append(window)
         return window
 
