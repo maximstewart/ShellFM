@@ -11,7 +11,7 @@ from .tabs.tab import Tab
 
 class Window:
     def __init__(self):
-        self._id_length: str  = 10
+        self._id_length: int  = 10
         self._id: str         = ""
         self._name: str       = ""
         self._nickname:str    = ""

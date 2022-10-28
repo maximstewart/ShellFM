@@ -20,25 +20,25 @@ from .path import Path
 
 class Tab(Settings, FileHandler, Launcher, Icon, Path):
     def __init__(self):
-        self.logger      = None
-        self._id_length   = 10
+        self.logger             = None
+        self._id_length: int    = 10
 
-        self._id          = ""
-        self._wid         = None
-        self._dir_watcher = None
-        self._hide_hidden = self.HIDE_HIDDEN_FILES
-        self._files       = []
-        self._dirs        = []
-        self._vids        = []
-        self._images      = []
-        self._desktop     = []
-        self._ungrouped   = []
-        self._hidden      = []
+        self._id: str           = ""
+        self._wid: str          = None
+        self._dir_watcher       = None
+        self._hide_hidden: bool = self.HIDE_HIDDEN_FILES
+        self._files: list       = []
+        self._dirs: list        = []
+        self._vids: list        = []
+        self._images: list      = []
+        self._desktop: list     = []
+        self._ungrouped: list   = []
+        self._hidden: list      = []
 
         self._generate_id()
         self.set_to_home()
 
-    def load_directory(self):
+    def load_directory(self) -> None:
         path            = self.get_path()
         self._dirs      = []
         self._vids      = []
@@ -97,7 +97,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
             return False
 
 
-    def get_not_hidden_count(self):
+    def get_not_hidden_count(self) -> int:
         return len(self._files)    + \
                 len(self._dirs)    + \
                 len(self._vids)    + \
@@ -111,7 +111,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
     def get_files_count(self) -> int:
         return len(self._files)
 
-    def get_path_part_from_hash(self, hash) -> str:
+    def get_path_part_from_hash(self, hash: str) -> str:
         files = self.get_files()
         file  = None
 
@@ -154,7 +154,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
         return data
 
 
-    def get_gtk_icon_str_combo(self):
+    def get_gtk_icon_str_combo(self) -> list:
         data = []
         dir  = self.get_current_directory()
         for file in self._files:
@@ -163,7 +163,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
 
         return data
 
-    def get_current_directory(self):
+    def get_current_directory(self) -> str:
         return self.get_path()
 
     def get_current_sub_path(self) -> str:
