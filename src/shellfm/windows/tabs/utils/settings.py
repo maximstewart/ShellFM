@@ -1,12 +1,12 @@
-# System import
+# Python imports
 import json
 import os
 from os import path
 
 # Lib imports
 
-
 # Apoplication imports
+
 
 
 

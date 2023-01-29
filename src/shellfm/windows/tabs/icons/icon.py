@@ -1,4 +1,4 @@
-# Python Imports
+# Python imports
 import hashlib
 from os.path import isfile
 
@@ -18,6 +18,7 @@ except Exception as e:
 from .mixins.videoiconmixin import VideoIconMixin
 from .mixins.meshsiconmixin import MeshsIconMixin
 from .mixins.desktopiconmixin import DesktopIconMixin
+
 
 
 

@@ -1,16 +1,13 @@
-# System import
-import os, threading, subprocess, shlex
+# Python imports
+import os,
+import subprocess
+import shlex
 
 # Lib imports
-
 
 # Apoplication imports
 
 
-def threaded(fn):
-    def wrapper(*args, **kwargs):
-        threading.Thread(target=fn, args=args, kwargs=kwargs).start()
-    return wrapper
 
 
 class Launcher:

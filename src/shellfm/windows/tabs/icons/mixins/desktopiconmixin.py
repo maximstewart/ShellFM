@@ -1,8 +1,10 @@
-# Python Imports
-import os, subprocess, hashlib
+# Python imports
+import os
 from os.path import isfile
+import subprocess
+import hashlib
 
-# Gtk imports
+# Lib imports
 import gi
 gi.require_version('Gtk', '3.0')
 
@@ -11,6 +13,8 @@ from gi.repository import Gio
 
 # Application imports
 from .xdg.DesktopEntry import DesktopEntry
+
+
 
 
 class DesktopIconMixin:
