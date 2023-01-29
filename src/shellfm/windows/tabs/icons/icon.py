@@ -15,9 +15,9 @@ except Exception as e:
     PImage = None
 
 # Application imports
-from .mixins.desktopiconmixin import DesktopIconMixin
 from .mixins.videoiconmixin import VideoIconMixin
-
+from .mixins.meshsiconmixin import MeshsIconMixin
+from .mixins.desktopiconmixin import DesktopIconMixin
 
 
 
@@ -41,11 +41,17 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
             elif full_path.lower().endswith( ('.desktop',) ):    # .desktop file parsing
                 thumbnl = self.parse_desktop_files(full_path)
 
+            if not thumbnl:
+                thumbnl = self.get_system_thumbnail(full_path, self.sys_icon_wh[0])
+
+            if not thumbnl:
+                thumbnl = self.return_generic_icon()
+
             return thumbnl
         except Exception:
             ...
 
-        return None
+        return self.return_generic_icon()
 
     def create_blender_thumbnail(self, dir, file, full_path=None):
         try:
@@ -117,9 +123,6 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
 
         return None
 
-    def return_generic_icon(self):
-        return GdkPixbuf.Pixbuf.new_from_file(self.DEFAULT_ICON)
-
     def get_system_thumbnail(self, filename, size):
         try:
             gio_file  = Gio.File.new_for_path(filename)
@@ -132,3 +135,6 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
             ...
 
         return None
+
+    def return_generic_icon(self):
+        return GdkPixbuf.Pixbuf.new_from_file(self.DEFAULT_ICON)
