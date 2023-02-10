@@ -56,9 +56,9 @@ class Settings:
         STEAM_CDN_URL     = config["steam_cdn_url"]
         FFMPG_THUMBNLR    = FFMPG_THUMBNLR   if config["thumbnailer_path"] == "" else config["thumbnailer_path"]
         BLENDER_THUMBNLR  = BLENDER_THUMBNLR if config["blender_thumbnailer_path"] == "" else config["blender_thumbnailer_path"]
-        HIDE_HIDDEN_FILES = True if config["hide_hidden_files"] == "true" else False
-        go_past_home      = True if config["go_past_home"] == "" else config["go_past_home"]
-        lock_folder       = True if config["lock_folder"] == "true" else False
+        HIDE_HIDDEN_FILES = True  if config["hide_hidden_files"] in ["true", ""] else False
+        go_past_home      = True  if config["go_past_home"] in ["true", ""] else False
+        lock_folder       = False if config["lock_folder"] in ["false", ""] else True
         locked_folders    = config["locked_folders"].split("::::")
         mplayer_options   = config["mplayer_options"].split()
         music_app         = config["music_app"]
@@ -77,6 +77,7 @@ class Settings:
 
         # Filters
         filters = settings["filters"]
+        fmeshs  = tuple(filters["meshs"])
         fcode   = tuple(filters["code"])
         fvideos = tuple(filters["videos"])
         foffice = tuple(filters["office"])
