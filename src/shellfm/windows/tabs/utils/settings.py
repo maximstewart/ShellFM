@@ -8,18 +8,29 @@ from os import path
 # Apoplication imports
 
 
+class ShellFMSettingsException(Exception):
+    ...
+
 
 
 class Settings:
     logger            = None
 
-    USR_SHELLFM       = "/usr/share/shellfm"
+    # NOTE: app_name should be defined using python 'builtins'
+    app_name_exists   = False
+    try:
+        app_name
+        app_name_exists = True
+    except Exception as e:
+        ...
+
+    APP_CONTEXT       = f"{app_name.lower()}" if app_name_exists else "shellfm"
+    USR_APP_CONTEXT   = f"/usr/share/{APP_CONTEXT}"
     USER_HOME         = path.expanduser('~')
-    CONFIG_PATH       = f"{USER_HOME}/.config/shellfm"
+    CONFIG_PATH       = f"{USER_HOME}/.config/{APP_CONTEXT}"
     CONFIG_FILE       = f"{CONFIG_PATH}/settings.json"
     HIDE_HIDDEN_FILES = True
 
-    GTK_ORIENTATION   = 1    # HORIZONTAL (0) VERTICAL (1)
     DEFAULT_ICONS     = f"{CONFIG_PATH}/icons"
     DEFAULT_ICON      = f"{DEFAULT_ICONS}/text.png"
     FFMPG_THUMBNLR    = f"{CONFIG_PATH}/ffmpegthumbnailer"    # Thumbnail generator binary
@@ -27,11 +38,14 @@ class Settings:
     REMUX_FOLDER      = f"{USER_HOME}/.remuxs"                # Remuxed files folder
 
     ICON_DIRS         = ["/usr/share/icons", f"{USER_HOME}/.icons" "/usr/share/pixmaps"]
-    BASE_THUMBS_PTH   = f"{USER_HOME}/.thumbnails"         # Used for thumbnail generation
-    ABS_THUMBS_PTH    = f"{BASE_THUMBS_PTH}/normal"        # Used for thumbnail generation
+    BASE_THUMBS_PTH   = f"{USER_HOME}/.thumbnails"
+    ABS_THUMBS_PTH    = f"{BASE_THUMBS_PTH}/normal"
     STEAM_ICONS_PTH   = f"{BASE_THUMBS_PTH}/steam_icons"
 
-    # Dir structure check
+    if not os.path.exists(CONFIG_PATH) or not os.path.exists(CONFIG_FILE):
+        msg = f"No config file located! Aborting loading ShellFM library...\nExpected: {CONFIG_FILE}"
+        raise ShellFMSettingsException(msg)
+
     if not path.isdir(REMUX_FOLDER):
         os.mkdir(REMUX_FOLDER)
 
@@ -45,7 +59,7 @@ class Settings:
         os.mkdir(STEAM_ICONS_PTH)
 
     if not os.path.exists(DEFAULT_ICONS):
-        DEFAULT_ICONS = f"{USR_SHELLFM}/icons"
+        DEFAULT_ICONS = f"{USR_APP_CONTEXT}/icons"
         DEFAULT_ICON  = f"{DEFAULT_ICONS}/text.png"
 
     with open(CONFIG_FILE) as f:

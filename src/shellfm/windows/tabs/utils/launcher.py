@@ -1,12 +1,14 @@
 # Python imports
 import os
 import subprocess
-import shlex
 
 # Lib imports
 
 # Apoplication imports
 
+
+class ShellFMLauncherException(Exception):
+    ...
 
 
 
@@ -16,12 +18,7 @@ class Launcher:
         command   = []
 
         if lowerName.endswith(self.fvideos):
-            command = [self.media_app]
-
-            if "mplayer" in self.media_app:
-                command += self.mplayer_options
-
-            command += [file]
+            command = [self.media_app, file]
         elif lowerName.endswith(self.fimages):
             command = [self.image_app, file]
         elif lowerName.endswith(self.fmusic):
@@ -43,20 +40,29 @@ class Launcher:
 
 
     def execute(self, command, start_dir=os.getenv("HOME"), use_shell=False):
-        self.logger.debug(command)
-        subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=True, stdout=None, stderr=None, close_fds=True)
+        try:
+            self.logger.debug(command)
+            subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=True, stdout=None, stderr=None, close_fds=True)
+        except ShellFMLauncherException as e:
+            self.logger.error(f"Couldn't execute: {command}")
+            self.logger.error(e)
 
-    # TODO: Return stdout and in handlers along with subprocess instead of sinking to null
+    # TODO: Return std(out/in/err) handlers along with subprocess instead of sinking to null
     def execute_and_return_thread_handler(self, command, start_dir=os.getenv("HOME"), use_shell=False):
-        DEVNULL = open(os.devnull, 'w')
-        return subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=False, stdout=DEVNULL, stderr=DEVNULL, close_fds=False)
+        try:
+            DEVNULL = open(os.devnull, 'w')
+            return subprocess.Popen(command, cwd=start_dir, shell=use_shell, start_new_session=False, stdout=DEVNULL, stderr=DEVNULL, close_fds=False)
+        except ShellFMLauncherException as e:
+            self.logger.error(f"Couldn't execute and return thread: {command}")
+            self.logger.error(e)
+            return None
 
     @threaded
     def app_chooser_exec(self, app_info, uris):
         app_info.launch_uris_async(uris)
 
     def remux_video(self, hash, file):
-        remux_vid_pth = self.REMUX_FOLDER + "/" + hash + ".mp4"
+        remux_vid_pth = "{self.REMUX_FOLDER}/{hash}.mp4"
         self.logger.debug(remux_vid_pth)
 
         if not os.path.isfile(remux_vid_pth):
@@ -76,9 +82,9 @@ class Launcher:
             try:
                 proc = subprocess.Popen(command)
                 proc.wait()
-            except Exception as e:
-                self.logger.debug(message)
-                self.logger.debug(e)
+            except ShellFMLauncherException as e:
+                self.logger.error(message)
+                self.logger.error(e)
                 return False
 
         return True
@@ -87,7 +93,7 @@ class Launcher:
         limit = self.remux_folder_max_disk_usage
         try:
             limit = int(limit)
-        except Exception as e:
+        except ShellFMLauncherException as e:
             self.logger.debug(e)
             return
 
