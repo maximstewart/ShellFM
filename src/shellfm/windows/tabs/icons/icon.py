@@ -35,11 +35,11 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
 
     def get_icon_image(self, dir, file, full_path):
         try:
-            thumbnl = self._get_system_thumbnail_gtk_thread(full_path, self.sys_icon_wh[0])
+            thumbnl = None
 
             if file.lower().endswith(self.fmeshs):               # 3D Mesh icon
                 ...
-            if file.lower().endswith(self.fvideos):              # Video icon
+            elif file.lower().endswith(self.fvideos):            # Video icon
                 thumbnl = self.create_video_thumbnail(full_path)
             elif file.lower().endswith(self.fimages):            # Image Icon
                 thumbnl = self.create_scaled_image(full_path)
@@ -49,7 +49,10 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
                 thumbnl = self.find_thumbnail_from_desktop_file(full_path)
 
             if not thumbnl:
-                raise IconException("No known icons found.")
+                thumbnl = self._get_system_thumbnail_gtk_thread(full_path, self.sys_icon_wh[0])
+                if not thumbnl:
+                    raise IconException("No known icons found.")
+
 
             return thumbnl
         except IconException:
@@ -163,14 +166,15 @@ class Icon(DesktopIconMixin, VideoIconMixin, MeshsIconMixin):
         return path_exists, img_hash, hash_img_path
 
 
-    def fast_hash(self, filename, hash_factory=hashlib.md5, chunk_num_blocks=128, i=1):
+    def fast_hash(self, filename: str, hash_factory: callable = hashlib.md5, chunk_num_blocks: int = 128, i: int = 1) -> str:
         h = hash_factory()
         with open(filename,'rb') as f:
+            # NOTE: Jump to middle of file
             f.seek(0, 2)
             mid = int(f.tell() / 2)
             f.seek(mid, 0)
 
-            while chunk := f.read(chunk_num_blocks*h.block_size):
+            while chunk := f.read(chunk_num_blocks * h.block_size):
                 h.update(chunk)
                 if (i == 12):
                     break

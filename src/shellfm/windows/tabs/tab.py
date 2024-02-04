@@ -49,9 +49,9 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
         self._hide_hidden: bool = self.HIDE_HIDDEN_FILES
         self._files: list       = []
         self._dirs: list        = []
-        self._vids: list        = []
+        self._videos: list      = []
         self._images: list      = []
-        self._desktop: list     = []
+        self._desktops: list    = []
         self._ungrouped: list   = []
         self._hidden: list      = []
 
@@ -61,9 +61,9 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
     def load_directory(self) -> None:
         path            = self.get_path()
         self._dirs      = []
-        self._vids      = []
+        self._videos      = []
         self._images    = []
-        self._desktop   = []
+        self._desktops  = []
         self._ungrouped = []
         self._hidden    = []
         self._files     = []
@@ -74,32 +74,35 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
             return ""
 
         for f in listdir(path):
-            file = join(path, f)
+            file    = join(path, f)
+            # content = {"name": f, hash: self._hash_text(f)}
+            content = f
+
             if self._hide_hidden:
                 if f.startswith('.'):
-                    self._hidden.append(f)
+                    self._hidden.append(content)
                     continue
 
             if isfile(file):
                 lowerName = file.lower()
                 if lowerName.endswith(self.fvideos):
-                    self._vids.append(f)
+                    self._videos.append(content)
                 elif lowerName.endswith(self.fimages):
-                    self._images.append(f)
+                    self._images.append(content)
                 elif lowerName.endswith((".desktop",)):
-                    self._desktop.append(f)
+                    self._desktops.append(content)
                 else:
-                    self._ungrouped.append(f)
+                    self._ungrouped.append(content)
             else:
-                self._dirs.append(f)
+                self._dirs.append(content)
 
-        self._dirs.sort(key=self._natural_keys)
-        self._vids.sort(key=self._natural_keys)
-        self._images.sort(key=self._natural_keys)
-        self._desktop.sort(key=self._natural_keys)
-        self._ungrouped.sort(key=self._natural_keys)
+        self._dirs.sort(key = self._natural_keys)
+        self._videos.sort(key = self._natural_keys)
+        self._images.sort(key = self._natural_keys)
+        self._desktops.sort(key = self._natural_keys)
+        self._ungrouped.sort(key = self._natural_keys)
 
-        self._files = self._dirs + self._vids + self._images + self._desktop + self._ungrouped
+        self._files = self._dirs + self._videos + self._images + self._desktops + self._ungrouped
 
     def is_folder_locked(self, hash):
         if self.lock_folder:
@@ -121,9 +124,9 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
     def get_not_hidden_count(self) -> int:
         return len(self._files)    + \
                 len(self._dirs)    + \
-                len(self._vids)    + \
+                len(self._videos)    + \
                 len(self._images)  + \
-                len(self._desktop) + \
+                len(self._desktops) + \
                 len(self._ungrouped)
 
     def get_hidden_count(self) -> int:
@@ -148,7 +151,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
         dirs      = self._hash_set(self._dirs),
         videos    = self.get_videos(),
         images    = self._hash_set(self._images),
-        desktops  = self._hash_set(self._desktop),
+        desktops  = self._hash_set(self._desktops),
         ungrouped = self._hash_set(self._ungrouped)
         hidden    = self._hash_set(self._hidden)
 
@@ -168,7 +171,7 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
     def get_video_icons(self) -> list:
         data = []
         dir  = self.get_current_directory()
-        for file in self._vids:
+        for file in self._videos:
             img_hash, hash_img_path = self.create_video_thumbnail(full_path=f"{dir}/{file}", returnHashInstead=True)
             data.append([img_hash, hash_img_path])
 
@@ -222,13 +225,13 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
         return self._hash_set(self._dirs)
 
     def get_videos(self) -> list:
-        return self._hash_set(self._vids)
+        return self._hash_set(self._videos)
 
     def get_images(self) -> list:
         return self._hash_set(self._images)
 
-    def get_desktops(self) -> list:
-        return self._hash_set(self._desktop)
+    def get_desktopss(self) -> list:
+        return self._hash_set(self._desktops)
 
     def get_ungrouped(self) -> list:
         return self._hash_set(self._ungrouped)
