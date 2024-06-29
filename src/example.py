@@ -15,22 +15,24 @@ def daemon_threaded_wrapper(fn):
         threading.Thread(target=fn, args=args, kwargs=kwargs, daemon=True).start()
     return wrapper
 
-
 # NOTE: Defined for ShellFM
-builtins.threaded          = threaded_wrapper
-builtins.daemon_threaded   = daemon_threaded_wrapper
+builtins.threaded        = threaded_wrapper
+builtins.daemon_threaded = daemon_threaded_wrapper
 
 
 # Lib imports
 
 # Apoplication imports
 from shellfm.windows.controller import WindowController
+from libs.logger import Logger
 
+
+
+builtins.logger          = Logger("./", _ch_log_lvl = 10, _fh_log_lvl = 10).get_logger()
 
 
 
 def main():
-    print("\n\n-------------------------------------------\n\n")
     window_controller = WindowController()
 
     # Create "File Window" 1
@@ -46,9 +48,9 @@ def main():
     window_controller.list_windows()
 
 
-    print("\n\n-------------------------------------------\n\n")
     window2.set_is_hidden(True)
     window_controller.list_windows()
+    logger.info("-- Finished Example Run --")
 
 
 if __name__ == '__main__':

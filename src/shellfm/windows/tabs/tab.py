@@ -14,7 +14,6 @@ from random import randint
 from .utils.settings import Settings
 from .utils.launcher import Launcher
 from .utils.filehandler import FileHandler
-from .icons.icon import Icon
 from .path import Path
 
 
@@ -37,9 +36,8 @@ except Exception as e:
 
 
 
-class Tab(Settings, FileHandler, Launcher, Icon, Path):
+class Tab(Settings, FileHandler, Launcher, Path):
     def __init__(self):
-        self.logger             = None
         self._id_length: int    = 10
 
         self._id: str           = ""
@@ -167,33 +165,6 @@ class Tab(Settings, FileHandler, Launcher, Icon, Path):
                 'hidden': hidden
             }
         }
-
-    def get_video_icons(self) -> list:
-        data = []
-        dir  = self.get_current_directory()
-        for file in self._videos:
-            img_hash, hash_img_path = self.create_video_thumbnail(full_path=f"{dir}/{file}", returnHashInstead=True)
-            data.append([img_hash, hash_img_path])
-
-        return data
-
-    def get_pixbuf_icon_str_combo(self):
-        data = []
-        dir  = self.get_current_directory()
-        for file in self._files:
-            icon = self.create_icon(dir, file).get_pixbuf()
-            data.append([icon, file])
-
-        return data
-
-    def get_gtk_icon_str_combo(self) -> list:
-        data = []
-        dir  = self.get_current_directory()
-        for file in self._files:
-            icon = self.create_icon(dir, file)
-            data.append([icon, file[0]])
-
-        return data
 
     def get_current_directory(self) -> str:
         return self.get_path()

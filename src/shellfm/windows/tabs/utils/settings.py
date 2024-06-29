@@ -14,8 +14,6 @@ class ShellFMSettingsException(Exception):
 
 
 class Settings:
-    logger            = None
-
     # NOTE: app_name should be defined using python 'builtins'
     app_name_exists   = False
     try:
